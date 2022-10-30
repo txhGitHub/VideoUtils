@@ -1,6 +1,5 @@
-#ifndef VIDEOENCODE_H
+﻿#ifndef VIDEOENCODE_H
 #define VIDEOENCODE_H
-
 
 class VideoEncode
 {

@@ -3,10 +3,9 @@
 message(STATUS "Start build mode :  ${Module}")
 include_directories(${CMAKE_SOURCE_DIR}/Decode
     ${CMAKE_SOURCE_DIR}/ThirdLib/ffmpeg/include)
-#include_directories("${CMAKE_SOURCE_DIR}/ThirdLib/include")
-#include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/include/libavformat)
+#find_package()
 #增加链接库
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/libs)
+#link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/ffmpeg/lib)
 
 #message(STATUS "Start build mode :  ${CMAKE_SOURCE_DIR}")
 aux_source_directory(./ CURRENT_SRCS)
@@ -23,5 +22,5 @@ add_library(${Module} STATIC  ${CURRENT_SRCS}
 message(STATUS "End building  : " ${Module} "\n")
 
 #设置链接库
-target_link_libraries(${Module} avcodec avdevice avfilter avformat avutil postproc swresample swscale)
+#target_link_libraries(${Module} avcodec avdevice avfilter avformat avutil postproc swresample swscale)
 

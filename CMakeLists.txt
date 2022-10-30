@@ -15,6 +15,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/StaticLib)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/DynamicLib)
 
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/ffmpeg/lib)
+
 #先编译子目录
 #add_subdirectory(ThirdLib)
 add_subdirectory(Encode)
@@ -28,6 +30,7 @@ set(STATIC_LIBRARYS ${CMAKE_SOURCE_DIR}/Out/StaticLib/libdecode.a
 #设置依赖的头文件
 include_directories( ${CMAKE_SOURCE_DIR}/Encode)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils)
+
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
@@ -64,6 +67,14 @@ else()
   )
 endif()
 
-target_link_libraries(VideoUtils PRIVATE Qt5::Widgets ${STATIC_LIBRARYS})
+target_link_libraries(VideoUtils PRIVATE Qt5::Widgets ${STATIC_LIBRARYS}
+    avcodec
+    avdevice
+    avfilter
+    avformat
+    avutil
+    postproc
+    swresample
+    swscale)
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
