@@ -17,6 +17,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/StaticLib)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/ffmpeg/lib)
 
+
+
 #先编译子目录
 #add_subdirectory(ThirdLib)
 add_subdirectory(Encode)
@@ -30,6 +32,12 @@ set(STATIC_LIBRARYS ${CMAKE_SOURCE_DIR}/Out/StaticLib/libdecode.a
 #设置依赖的头文件
 include_directories( ${CMAKE_SOURCE_DIR}/Encode)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils)
+include_directories( ${CMAKE_SOURCE_DIR}/OpenGL)
+
+
+aux_source_directory(${CMAKE_SOURCE_DIR}/OpenGL OPENGL_SRCS)
+
+#include_directories(${CMAKE_CURRENT_BINARY_DIR}/VideoUtils_autogen/include)
 
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
@@ -64,6 +72,7 @@ else()
     mainwindow.h
     mainwindow.ui
     ${TS_FILES}
+    ${OPENGL_SRCS}
   )
 endif()
 
