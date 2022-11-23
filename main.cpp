@@ -2,13 +2,12 @@
 #include <QApplication>
 #include <QDebug>
 
-#include "videoencode.h"
+#include "videocontroller.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    VideoEncode();
     return a.exec();
 }

@@ -14,4 +14,7 @@
 #endif
 
 #define  DEBUG_INFO(format, ...) printf("Info: %s:%d, %s " format "\n", __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__);
+
+
+
 #endif //VIDEOTOOLS_LOG_H

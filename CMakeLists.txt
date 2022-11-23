@@ -10,6 +10,10 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_BUILD_TYPE Debug)
+
+#添加资源文件
+file(GLOB_RECURSE QRC_SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.qrc)
 
 #设置静态动态库输出目录
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/StaticLib)
@@ -17,22 +21,24 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/StaticLib)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/ffmpeg/lib)
 
-
-
 #先编译子目录
-#add_subdirectory(ThirdLib)
-add_subdirectory(Encode)
-add_subdirectory(Decode)
-#add_subdirectory(Utils)
+add_subdirectory(VideoController)
 
 #设置依赖的静态库
-set(STATIC_LIBRARYS ${CMAKE_SOURCE_DIR}/Out/StaticLib/libdecode.a
-                ${CMAKE_SOURCE_DIR}/Out/StaticLib/libencode.a
+set(STATIC_LIBRARYS
+                ${CMAKE_SOURCE_DIR}/Out/StaticLib/libvideocontroller.a
            )
 #设置依赖的头文件
-include_directories( ${CMAKE_SOURCE_DIR}/Encode)
+include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/ffmpeg/include)
+include_directories( ${CMAKE_SOURCE_DIR}/Utils/Mutex)
+include_directories( ${CMAKE_SOURCE_DIR}/VideoController)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils)
 include_directories( ${CMAKE_SOURCE_DIR}/OpenGL)
+include_directories(${CMAKE_SOURCE_DIR}/Interface)
+
+#对于一个头文件，例如，c.h,被静态库的头文件b.h包含，并且其他头文件包含了b.h，需要包含了c.h的cmake中加入头文件所在路径
+#对于编译的静态库，如果依赖了实现，不能只添加头文件依赖，要么就把实现写在.h文件中，要么就添加cpp依赖
+
 
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/OpenGL OPENGL_SRCS)
@@ -40,22 +46,22 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/OpenGL OPENGL_SRCS)
 #include_directories(${CMAKE_CURRENT_BINARY_DIR}/VideoUtils_autogen/include)
 
 
-# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
-# Check http://doc.qt.io/qt-5/deployment-android.html for more information.
-# They need to be set before the find_package(Qt5 ...) call.
-
-#if(ANDROID)
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-#    if (ANDROID_ABI STREQUAL "armeabi-v7a")
-#        set(ANDROID_EXTRA_LIBS
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
-#    endif()
-#endif()
-
 find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
 
 set(TS_FILES VideoUtils_zh_CN.ts)
+
+
+qt5_add_resources(SOURCES  ${QRC_SOURCE_FILES})
+
+#设置工程源文件
+set(PROJECT_SOURCES
+        main.cpp
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+       ${TS_FILES}
+       ${OPENGL_SRCS}
+)
 
 if(ANDROID)
   add_library(VideoUtils SHARED
@@ -63,16 +69,13 @@ if(ANDROID)
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    ${TS_FILES}
+
   )
 else()
   add_executable(VideoUtils
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    ${TS_FILES}
-    ${OPENGL_SRCS}
+    ${PROJECT_SOURCES}
+    ${QRC_FILES}
+    ${SOURCES}
   )
 endif()
 

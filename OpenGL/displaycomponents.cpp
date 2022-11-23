@@ -2,15 +2,6 @@
 
 #include <QtDebug>
 
-//#define GLCHA(x)  #@x           //加单引号,将x变为字符
-//#define GLSTR(x)  #x            //加双引号，将x变为字符串
-//#define GET_GLSTR(x) GL_VERSION#x
-
-//DisplayComponents::DisplayComponents(QWidget *parent):QOpenGLWidget(parent)
-//{
-//    qDebug() << "DisplayComponents constructor" ;
-//}
-
 DisplayComponents::DisplayComponents(QWidget *parent):
      QOpenGLWidget(parent)
 {

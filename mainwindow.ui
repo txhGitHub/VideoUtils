@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1064</width>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,25 +17,86 @@
    <widget class="DisplayComponents" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>771</width>
-      <height>541</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1071</width>
+      <height>651</height>
      </rect>
     </property>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>650</y>
+      <width>1061</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="stop_start">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resource/interface_icon.qrc">
+         <normaloff>:/sinhung/image/start_focus.png</normaloff>:/sinhung/image/start_focus.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="elapsed_time">
+       <property name="text">
+        <string>00:00:00</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="total_video_duration">
+       <property name="text">
+        <string>/ 00:00:00</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="volume">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resource/interface_icon.qrc">
+         <normaloff>:/sinhung/image/volume_normal.png</normaloff>:/sinhung/image/volume_normal.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="video_list">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resource/interface_icon.qrc">
+         <normaloff>:/sinhung/image/open_focus.png</normaloff>:/sinhung/image/open_focus.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
@@ -45,6 +106,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource/interface_icon.qrc"/>
+ </resources>
  <connections/>
 </ui>
