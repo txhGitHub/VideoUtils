@@ -33,7 +33,7 @@ include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/ffmpeg/include)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils/Mutex)
 include_directories( ${CMAKE_SOURCE_DIR}/VideoController)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils)
-include_directories( ${CMAKE_SOURCE_DIR}/OpenGL)
+include_directories( ${CMAKE_SOURCE_DIR}/Components)
 include_directories(${CMAKE_SOURCE_DIR}/Interface)
 
 #对于一个头文件，例如，c.h,被静态库的头文件b.h包含，并且其他头文件包含了b.h，需要包含了c.h的cmake中加入头文件所在路径
@@ -41,7 +41,7 @@ include_directories(${CMAKE_SOURCE_DIR}/Interface)
 
 
 
-aux_source_directory(${CMAKE_SOURCE_DIR}/OpenGL OPENGL_SRCS)
+aux_source_directory(${CMAKE_SOURCE_DIR}/Components COMPONENTS_SRCS)
 
 #include_directories(${CMAKE_CURRENT_BINARY_DIR}/VideoUtils_autogen/include)
 
@@ -60,7 +60,7 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
        ${TS_FILES}
-       ${OPENGL_SRCS}
+       ${COMPONENTS_SRCS}
 )
 
 if(ANDROID)

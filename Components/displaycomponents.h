@@ -13,6 +13,8 @@
 #include <GL/glu.h>
 #include <QOpenGLTexture>
 
+#include "videoframe.h"
+
 
 /**
 *  public slots:  //任意对象都可以将信号与之链接
@@ -41,15 +43,40 @@ public slots:
     void setImage(const QImage &image);
     void initTextures();
     void initShaders();
+    void setVideoWH(int w, int h);
+    void showInputFrame(VideoFramePtr videoFrame);
 
 
 private:
     QVector<QVector3D> vertices;
     QVector<QVector2D> texCoords;
-    QOpenGLShaderProgram program;
+    QOpenGLShaderProgram* m_program;
     QOpenGLTexture *texture;
     QMatrix4x4 projection;
 
+    QOpenGLShader *m_pVSHader;  //顶点着色器程序对象
+    QOpenGLShader *m_pFSHader;  //片段着色器对象
+
+    GLuint m_posAttr;
+    GLuint m_colAttr;
+
+    QOpenGLShaderProgram *m_pShaderProgram; //着色器程序容器
+
+    ///OPenGL用于绘制图像
+    GLuint textureUniformY; //y纹理数据位置
+    GLuint textureUniformU; //u纹理数据位置
+    GLuint textureUniformV; //v纹理数据位置
+    GLfloat *m_vertexVertices; // 顶点矩阵
+    QOpenGLTexture* m_pTextureY;  //y纹理对象
+    QOpenGLTexture* m_pTextureU;  //u纹理对象
+    QOpenGLTexture* m_pTextureV;  //v纹理对象
+    GLuint id_y; //y纹理对象ID
+    GLuint id_u; //u纹理对象ID
+    GLuint id_v; //v纹理对象ID
+    VideoFramePtr mVideoFrame;
+
+    int m_nVideoW; //视频分辨率宽
+    int m_nVideoH; //视频分辨率高
     // QWidget interface
 
 };

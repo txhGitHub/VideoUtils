@@ -30,7 +30,6 @@ bool VideoController::startPlay(std::string &filePath)
 
 void VideoController::readVideoFile()
 {
-//    avcodec_register_all();
     DEBUG_INFO("xinong readVideoFile");
 
     int ret = 0;
@@ -105,10 +104,13 @@ void VideoController::readVideoFile()
             }
 
             AVPacket packet;
+//            static int count = 0;
+//            count++;
+//            DEBUG_INFO("xinhong count %d", count);
+
             if (av_read_frame(m_pInFormatCtx, &packet) < 0)
             {
                 DEBUG_INFO("Video data reading completed .\n");
-                mSleep(10);
                 continue;
             }
 
@@ -121,7 +123,6 @@ void VideoController::readVideoFile()
     }
     while (0);
 }
-
 
 bool VideoController::inputVideoQuene(const AVPacket &pkt)
 {

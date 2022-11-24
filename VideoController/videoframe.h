@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <stdint.h>
-//#define VideoFramePtr std::shared_ptr<VideoFrame>
+#define VideoFramePtr std::shared_ptr<VideoFrame>
 
 class VideoFrame
 {

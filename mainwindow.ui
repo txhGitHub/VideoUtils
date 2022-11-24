@@ -6,93 +6,147 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1064</width>
-    <height>691</height>
+    <width>1093</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="DisplayComponents" name="widget" native="true">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1071</width>
-      <height>651</height>
+      <width>1091</width>
+      <height>581</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>650</y>
-      <width>1061</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,8">
      <item>
-      <widget class="QPushButton" name="stop_start">
-       <property name="text">
-        <string/>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>视频源</string>
        </property>
-       <property name="icon">
-        <iconset resource="resource/interface_icon.qrc">
-         <normaloff>:/sinhung/image/start_focus.png</normaloff>:/sinhung/image/start_focus.png</iconset>
-       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>181</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QRadioButton" name="radioButton">
+           <property name="text">
+            <string>捕获设备</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButton_2">
+           <property name="text">
+            <string>网络串流</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButton_3">
+           <property name="text">
+            <string>本地文件</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>181</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="elapsed_time">
-       <property name="text">
-        <string>00:00:00</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="total_video_duration">
-       <property name="text">
-        <string>/ 00:00:00</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="volume">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resource/interface_icon.qrc">
-         <normaloff>:/sinhung/image/volume_normal.png</normaloff>:/sinhung/image/volume_normal.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="video_list">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resource/interface_icon.qrc">
-         <normaloff>:/sinhung/image/open_focus.png</normaloff>:/sinhung/image/open_focus.png</iconset>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="playLayout" stretch="12,1">
+       <item>
+        <widget class="DisplayComponents" name="widget" native="true"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="stop_start">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resource/interface_icon.qrc">
+             <normaloff>:/sinhung/image/start_focus.png</normaloff>:/sinhung/image/start_focus.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="elapsed_time">
+           <property name="text">
+            <string>00:00:00</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="total_video_duration">
+           <property name="text">
+            <string>/ 00:00:00</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="SinProgressBar" name="progressBar">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="volume">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resource/interface_icon.qrc">
+             <normaloff>:/sinhung/image/volume_normal.png</normaloff>:/sinhung/image/volume_normal.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="video_list">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resource/interface_icon.qrc">
+             <normaloff>:/sinhung/image/open_focus.png</normaloff>:/sinhung/image/open_focus.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -104,6 +158,11 @@
    <extends>QWidget</extends>
    <header>displaycomponents.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SinProgressBar</class>
+   <extends>QProgressBar</extends>
+   <header>sinprogressbar.h</header>
   </customwidget>
  </customwidgets>
  <resources>

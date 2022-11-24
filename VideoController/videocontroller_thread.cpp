@@ -98,13 +98,13 @@ void VideoController::decodeVideoThread()
                 imgConvertCtx = sws_getContext(videoWidth, videoHeight,
                         (AVPixelFormat)pFrame->format, videoWidth, videoHeight,
                         AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
-
             }
 
             sws_scale(imgConvertCtx,
                     (uint8_t const * const *) pFrame->data,
                     pFrame->linesize, 0, videoHeight, pFrameYUV->data,
                     pFrameYUV->linesize);
+            mSleep(30);
             doDisplayVideo(yuv420pBuffer, videoWidth, videoHeight);
         }
         av_packet_unref(packet);
@@ -135,6 +135,7 @@ void VideoController::doDisplayVideo(const uint8_t *yuv420Buffer, const int &wid
          VideoFrame * ptr = videoFrame.get();
          ptr->initBuffer(width, height);
          ptr->setYUVbuf(yuv420Buffer);
+//         mSleep(30);
          m_pVideoCallback->onDisplayVideo(videoFrame);
     }
 }

@@ -23,9 +23,16 @@ private:
     Ui::MainWindow *ui;
     QTimer m_QTimer;
     VideoController* m_pvideoController;
+    int m_x, m_y;
 public slots:
     void slotUpdate();
 
     // VideoCallback interface
+private slots:
+    void on_volume_clicked();
+
+    // QWidget interface
+protected:
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 #endif // MAINWINDOW_H
