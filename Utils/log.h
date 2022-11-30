@@ -3,6 +3,10 @@
 //
 #include<stdlib.h>
 #include <stdio.h>
+//#include <sys/types.h>
+//#include <unistd.h>
+#include "windows.h"
+
 
 #ifndef VIDEOTOOLS_LOG_H
 #define VIDEOTOOLS_LOG_H
@@ -13,7 +17,8 @@
 #define  LOGFUNC(...)  (printf(__VA_ARGS__))
 #endif
 
-#define  DEBUG_INFO(format, ...) printf("Info: %s:%d, %s " format "\n", __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__);
+#define  DEBUG_INFO(format, ...) printf("%d %d Info: %s:%d, %s " format "\n", GetCurrentProcessId(),  \
+            GetCurrentThreadId(), __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__);
 
 
 

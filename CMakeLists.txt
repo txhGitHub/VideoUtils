@@ -20,6 +20,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/StaticLib)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Out/DynamicLib)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/ffmpeg/lib)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/SDL2/64/bin)
+#link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdLib/SDL2/64/static)
 
 #先编译子目录
 add_subdirectory(VideoController)
@@ -30,11 +32,13 @@ set(STATIC_LIBRARYS
            )
 #设置依赖的头文件
 include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/ffmpeg/include)
+include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/SDL2/include)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils/Mutex)
 include_directories( ${CMAKE_SOURCE_DIR}/VideoController)
 include_directories( ${CMAKE_SOURCE_DIR}/Utils)
 include_directories( ${CMAKE_SOURCE_DIR}/Components)
 include_directories(${CMAKE_SOURCE_DIR}/Interface)
+include_directories(${CMAKE_SOURCE_DIR}/UI_Components)
 
 #对于一个头文件，例如，c.h,被静态库的头文件b.h包含，并且其他头文件包含了b.h，需要包含了c.h的cmake中加入头文件所在路径
 #对于编译的静态库，如果依赖了实现，不能只添加头文件依赖，要么就把实现写在.h文件中，要么就添加cpp依赖
@@ -42,6 +46,7 @@ include_directories(${CMAKE_SOURCE_DIR}/Interface)
 
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/Components COMPONENTS_SRCS)
+aux_source_directory(${CMAKE_SOURCE_DIR}/UI_Components UI_COMPONENTS_SRCS)
 
 #include_directories(${CMAKE_CURRENT_BINARY_DIR}/VideoUtils_autogen/include)
 
@@ -57,6 +62,7 @@ qt5_add_resources(SOURCES  ${QRC_SOURCE_FILES})
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
+        oplus_mainwindow.cpp
         mainwindow.h
         mainwindow.ui
        ${TS_FILES}
@@ -76,6 +82,7 @@ else()
     ${PROJECT_SOURCES}
     ${QRC_FILES}
     ${SOURCES}
+    ${UI_COMPONENTS_SRCS}
   )
 endif()
 
@@ -87,6 +94,7 @@ target_link_libraries(VideoUtils PRIVATE Qt5::Widgets ${STATIC_LIBRARYS}
     avutil
     postproc
     swresample
-    swscale)
+    swscale
+    SDL2)
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

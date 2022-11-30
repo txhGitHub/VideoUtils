@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1093</width>
-    <height>586</height>
+    <width>979</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,78 +17,113 @@
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1091</width>
+      <width>971</width>
       <height>581</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,8">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,15">
      <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>视频源</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>181</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QRadioButton" name="radioButton">
-           <property name="text">
-            <string>捕获设备</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_2">
-           <property name="text">
-            <string>网络串流</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_3">
-           <property name="text">
-            <string>本地文件</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>160</y>
-          <width>181</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>视频源</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6" stretch="5,1,20">
+          <item>
+           <layout class="QVBoxLayout" name="video_src_Layout">
+            <item>
+             <widget class="QRadioButton" name="radioButton">
+              <property name="text">
+               <string>捕获设备</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton_2">
+              <property name="text">
+               <string>网络串流</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton_3">
+              <property name="text">
+               <string>本地文件</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QStackedWidget" name="stackedWidget">
+            <widget class="LocalFile_Page" name="device_page"/>
+            <widget class="QWidget" name="network_page"/>
+            <widget class="QWidget" name="localfile_page"/>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="playLayout" stretch="12,1">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="20,1">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
        <item>
-        <widget class="DisplayComponents" name="widget" native="true"/>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <item>
+          <widget class="DisplayComponents" name="video_widget" native="true"/>
+         </item>
+        </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QPushButton" name="stop_start">
+          <widget class="QPushButton" name="stop_start_2">
            <property name="text">
             <string/>
            </property>
@@ -99,21 +134,21 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="elapsed_time">
+          <widget class="QLabel" name="elapsed_time_2">
            <property name="text">
             <string>00:00:00</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="total_video_duration">
+          <widget class="QLabel" name="total_video_duration_2">
            <property name="text">
             <string>/ 00:00:00</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="SinProgressBar" name="progressBar">
+          <widget class="SinProgressBar" name="progressBar_2">
            <property name="styleSheet">
             <string notr="true"/>
            </property>
@@ -123,7 +158,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="volume">
+          <widget class="QPushButton" name="volume_button">
            <property name="text">
             <string/>
            </property>
@@ -134,7 +169,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="video_list">
+          <widget class="QPushButton" name="video_list_2">
            <property name="text">
             <string/>
            </property>
@@ -163,6 +198,12 @@
    <class>SinProgressBar</class>
    <extends>QProgressBar</extends>
    <header>sinprogressbar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LocalFile_Page</class>
+   <extends>QWidget</extends>
+   <header>localfile_page.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -2,6 +2,7 @@
 
 message(STATUS "Start build mode :  ${Module}")
 include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/ffmpeg/include)
+include_directories(${CMAKE_SOURCE_DIR}/ThirdLib/SDL2/include)
 include_directories(${CMAKE_SOURCE_DIR}/Utils)
 include_directories(${CMAKE_SOURCE_DIR}/Utils/Mutex)
 include_directories(${CMAKE_SOURCE_DIR}/Interface)
