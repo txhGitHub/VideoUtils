@@ -15,7 +15,6 @@ void VideoController::decodeVideoThread()
     double audio_pts = 0; //音频pts
     int videoWidth  = 0;
     int videoHeight = 0;
-
     while (1) {
         m_pConditon_Video->Lock();
         if (mVideoPacktList.size() <= 0) {
@@ -23,11 +22,16 @@ void VideoController::decodeVideoThread()
             m_pConditon_Video->Unlock();
             continue;
         }
-
         AVPacket pkt1 = mVideoPacktList.front();
         mVideoPacktList.pop_front();
         m_pConditon_Video->Unlock();
         AVPacket *packet = &pkt1;
+        long delay  =(long) (calculateDelay(packet) * 1000);
+        if(delay >= 0) {
+            mSleep(delay);
+        }
+        DEBUG_INFO("xinhong delay %ld\n", delay);
+
         //收到这个数据 说明刚刚执行过跳转 现在需要把解码器的数据 清除一下
         if(strcmp((char*)packet->data, FLUSH_DATA) == 0) {
             avcodec_flush_buffers(m_pVideoCodecCtx);
@@ -87,8 +91,9 @@ void VideoController::decodeVideoThread()
                     (uint8_t const * const *) pFrame->data,
                     pFrame->linesize, 0, videoHeight, pFrameYUV->data,
                     pFrameYUV->linesize);
-            mSleep(30);
             doDisplayVideo(yuv420pBuffer, videoWidth, videoHeight);
+            g_VideoState.last_vframe_pts = pFrame->pts; //获取送显时间
+            DEBUG_INFO("xinhong pts %ld\n", pFrame->pts);
         }
         av_packet_unref(packet);
     }
@@ -110,10 +115,11 @@ void VideoController::decodeVideoThread()
 void VideoController::doDisplayVideo(const uint8_t *yuv420Buffer, const int &width, const int &height)
 {
     if(m_pVideoCallback != nullptr) {
-         std::shared_ptr<VideoFrame> videoFrame = std::make_shared<VideoFrame>();
-         VideoFrame * ptr = videoFrame.get();
-         ptr->initBuffer(width, height);
-         ptr->setYUVbuf(yuv420Buffer);
-         m_pVideoCallback->onDisplayVideo(videoFrame);
+        g_VideoState.last_display_timer = av_gettime_relative()/1000000.0; //获取送显时间
+        std::shared_ptr<VideoFrame> videoFrame = std::make_shared<VideoFrame>();
+        VideoFrame * ptr = videoFrame.get();
+        ptr->initBuffer(width, height);
+        ptr->setYUVbuf(yuv420Buffer);
+        m_pVideoCallback->onDisplayVideo(videoFrame);
     }
 }

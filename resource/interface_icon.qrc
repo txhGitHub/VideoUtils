@@ -20,5 +20,6 @@
         <file>image/volume.psd</file>
         <file>image/volume_mute.png</file>
         <file>image/volume_normal.png</file>
+        <file>image/info_icon.png</file>
     </qresource>
 </RCC>

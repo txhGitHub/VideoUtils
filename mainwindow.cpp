@@ -8,6 +8,7 @@
 #include <QWidgetAction>
 #include <QMouseEvent>
 #include <sinslider.h>
+#include <infoplane.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -55,4 +56,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 ////        statusBar()->showMessage();
 //        ui->label->show();
 //      }
+}
+
+void MainWindow::on_video_list_2_clicked()
+{
+    //显示视频信息面板
+    InfoPlane* infoPlane = new InfoPlane();
+    infoPlane->setGeometry(ui->centralwidget->mapToGlobal(QPoint(0, 0)).x() + ui->centralwidget->width(),
+                        ui->centralwidget->mapToGlobal(QPoint(0, 0)).y(),  infoPlane->width(), infoPlane->height());
+    infoPlane->show();
 }

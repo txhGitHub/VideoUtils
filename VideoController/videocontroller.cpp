@@ -4,6 +4,10 @@
 #include  <direct.h>
 #include <string>
 
+
+//静态变量定义
+VideoState VideoController::g_VideoState = {0};
+
 VideoController::VideoController()
 {
 //    打印结果在缓冲区未被释放，
@@ -61,14 +65,12 @@ bool VideoController::startPlay(std::string &filePath)
         }
     }
     //打开视频解码器，并启动视频线程
-   if(!beforeVideoDecode(videoStreamIdx))
-   {
+   if(!beforeVideoDecode(videoStreamIdx)) {
         DEBUG_INFO("beforeVideoDecode call failed!");
         return ret;
    }
 
-   if(!beforeAudioDecode(audioStreamIdx))
-   {
+   if(!beforeAudioDecode(audioStreamIdx)) {
         DEBUG_INFO("beforeAudioDecode call failed!");
         return ret;
    }
@@ -77,32 +79,37 @@ bool VideoController::startPlay(std::string &filePath)
        //这里做了个限制  当队列里面的数据超过某个大小的时候 就暂停读取  防止一下子就把视频读完了，导致的空间分配不足
        //这个值可以稍微写大一些
 
-       if (mAudioPacktList.size() > MAX_AUDIO_SIZE || mVideoPacktList.size() > MAX_VIDEO_SIZE)
-       {
+       if (mAudioPacktList.size() > MAX_AUDIO_SIZE || mVideoPacktList.size() > MAX_VIDEO_SIZE) {
            mSleep(10);
            continue;
        }
 
        AVPacket packet;
-       if (av_read_frame(m_pInFormatCtx, &packet) < 0)
-       {
-           continue;
+       if ((ret = av_read_frame(m_pInFormatCtx, &packet)) < 0) {
+           if(ret == AVERROR_EOF) {
+                DEBUG_INFO("the decoder has been fully flushed!");
+                break;
+           }
+           else if(ret == AVERROR(EAGAIN)) {
+                DEBUG_INFO("return error from library functions");
+                 break;
+           }
+           else {
+                continue;
+           }
        }
 
-       if (packet.stream_index == videoStreamIdx)
-       {
+       if (packet.stream_index == videoStreamIdx) {
 
            inputVideoQuene(packet);
            //这里我们将数据存入队列 因此不调用 av_free_packet 释放
        }
-       else if( packet.stream_index == audioStreamIdx)
-       {
+       else if( packet.stream_index == audioStreamIdx) {
 
            inputAudioQuene(packet);
                            //这里我们将数据存入队列 因此不调用 av_free_packet 释放
        }
-       else
-       {
+       else {
            // Free the packet that was allocated by av_read_frame
            av_packet_unref(&packet);
        }
@@ -162,8 +169,8 @@ int VideoController::openSDL()
         }
         DEBUG_INFO("mAudioID %d %s", mAudioID ,SDL_GetAudioDeviceName(i,0));
      }
-     if(mAudioID < 0)
-     {
+
+     if(mAudioID < 0) {
          DEBUG_INFO("SDL_GetError %s", SDL_GetError() );
      }
 
@@ -184,8 +191,7 @@ int VideoController::openSDL()
 
 void VideoController::closeSDL()
 {
-    if (mAudioID >= 0)
-    {
+    if (mAudioID >= 0) {
         SDL_LockAudioDevice(mAudioID);
         SDL_PauseAudioDevice(mAudioID, 1);
         SDL_UnlockAudioDevice(mAudioID);
@@ -193,6 +199,29 @@ void VideoController::closeSDL()
     }
 
     mAudioID = 0;
+}
+
+double VideoController::calculateDelay(AVPacket *pkt)
+{
+    //音视频同步,待改善
+    double sync_threshold, diff = 0;
+    //解码前后前后的pts,解码前的pts是以AVStream.time_base为基准
+    //计算上一帧音频与视频的差值
+    double delay = 0.0;
+    diff =  ((g_VideoState.last_vframe_pts* av_q2d(m_pVideoStream->time_base)) -
+             (g_VideoState.last_aframe_pts  * av_q2d(m_pAudioStream->time_base)));
+    delay = ((pkt->pts - g_VideoState.last_vframe_pts) * av_q2d(m_pVideoStream->time_base));
+
+    DEBUG_INFO("xinhong  diff:%f ", diff);
+
+    sync_threshold = AV_SYNC_THRESHOLD_MAX;
+    if (diff < -AV_SYNC_THRESHOLD_MIN)
+        delay = FFMAX(0, delay + diff);
+    else if ( diff > AV_SYNC_THRESHOLD_MIN && diff < AV_SYNC_THRESHOLD_MAX)
+        delay = delay + diff;
+    else if(diff >= AV_SYNC_THRESHOLD_MAX)
+        delay = delay*2;
+    return delay;
 }
 
 bool VideoController::beforeVideoDecode(int streamId)
@@ -242,14 +271,12 @@ bool VideoController::beforeAudioDecode(int streamId)
     bool result = false;
     do {
         ///SDL初始化需要放入子线程中，否则有些电脑会有问题。
-        if (SDL_Init(SDL_INIT_AUDIO))
-        {
+        if (SDL_Init(SDL_INIT_AUDIO)) {
             DEBUG_INFO("Could not initialize SDL - %s. \n", SDL_GetError());
             break;
         }
 
-        if(streamId >= 0)
-        {
+        if(streamId >= 0) {
             //nb_samples:一般指，在一个通道内，每一帧的采样率，一般情况是固定的，如MP3为1152，AAC为1024。
             //实际上ffmpeg音频方面很多计算都与该数据有关，实际开发中记得注意该值
             ///查找音频解码器
@@ -266,6 +293,7 @@ bool VideoController::beforeAudioDecode(int streamId)
                 DEBUG_INFO("Could not open video codec.\n");
                 break;
             }
+            m_pAudioStream = m_pInFormatCtx->streams[streamId];
 
             //frame->16bit 44100 PCM 统一音频采样格式与采样率
             m_pAudioFrame = av_frame_alloc();
@@ -273,8 +301,7 @@ bool VideoController::beforeAudioDecode(int streamId)
             //swr_alloc_set_opts为ffmpeg设置，SDL为播放驱动设置，因此，输出二者需要保持一致
             //输入的声道布局
             int64_t in_channel_layout = m_pAudioCodecCtx->channel_layout;
-            if (in_channel_layout <= 0)
-            {
+            if (in_channel_layout <= 0) {
                 in_channel_layout = av_get_default_channel_layout(m_pAudioCodecCtx->channels);
             }
             //输出
@@ -290,8 +317,7 @@ bool VideoController::beforeAudioDecode(int streamId)
 
             int ret = swr_init(m_pSwrCtx); //设置了参数就需要调用一初始化
 
-            if(ret < 0)
-            {
+            if(ret < 0) {
                 char buff[128]={0};
                 av_strerror(ret, buff, 128);
                 DEBUG_INFO("Could not open resample context: %s\n", buff);
@@ -302,8 +328,7 @@ bool VideoController::beforeAudioDecode(int streamId)
             ///打开SDL播放声音
             int code = openSDL();
 
-            if (code == 0)
-            {
+            if (code == 0) {
                 SDL_LockAudioDevice(mAudioID);
                 SDL_PauseAudioDevice(mAudioID,0);
                 SDL_UnlockAudioDevice(mAudioID);

@@ -14,7 +14,6 @@ void VideoController::sdlAudioCallBackFunc(void *userdata, Uint8 *stream, int le
 
 int VideoController::decodeAudioFrame()
 {
-    DEBUG_INFO("xinhong  decodeAudioFrame");
     int res;
     int audioBufferSize = 0;
     AVFrame *pFrame = nullptr;
@@ -37,6 +36,7 @@ int VideoController::decodeAudioFrame()
 //        if (pkt->pts != AV_NOPTS_VALUE) {
 //            audio_clock = av_q2d(m_pAudioStream->time_base) * pkt->pts;
 //        }
+//        calculateDelay(pkt);
 
         //收到这个数据 说明刚刚执行过跳转 现在需要把解码器的数据 清除一下
         if(strcmp((char*)pkt->data,FLUSH_DATA) == 0) {
@@ -50,6 +50,7 @@ int VideoController::decodeAudioFrame()
            av_packet_unref(pkt);
            continue;
         }
+//        DEBUG_INFO("xinhong audio pts:  %f", (pkt->pts * av_q2d(m_pAudioStream->time_base)));
 
         //每一帧时间计算为：每一帧样本数*1000ms/采样率，记为：nb_samples
         //进行重采样时，输入输出时间需要一致，也就是一阵的输入输出时间是一致的。因此，
@@ -71,11 +72,11 @@ int VideoController::decodeAudioFrame()
 //        int data_size = av_get_bytes_per_sample(m_outFormat);
 
         audioBufferSize = unpadded_linesize;
+        g_VideoState.last_aframe_pts = pkt->pts; //获取送显时间
         av_packet_unref(&packet);
         av_free(pFrame);
     }
     } while(0);
-    DEBUG_INFO("xinhong audioBufferSize %d", audioBufferSize);
     return audioBufferSize;
 }
 

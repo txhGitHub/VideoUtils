@@ -17,7 +17,7 @@
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -175,7 +175,7 @@
            </property>
            <property name="icon">
             <iconset resource="resource/interface_icon.qrc">
-             <normaloff>:/sinhung/image/open_focus.png</normaloff>:/sinhung/image/open_focus.png</iconset>
+             <normaloff>:/sinhung/image/info_icon.png</normaloff>:/sinhung/image/info_icon.png</iconset>
            </property>
           </widget>
          </item>

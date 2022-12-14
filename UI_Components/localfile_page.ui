@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>请拖拽文件到此窗口</string>
+    <string>请拖拽文件到此处</string>
    </property>
   </widget>
  </widget>

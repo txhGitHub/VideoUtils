@@ -41,5 +41,6 @@ private slots:
     void on_volume_clicked();
     void select_video_src();
 
+    void on_video_list_2_clicked();
 };
 #endif // MAINWINDOW_H

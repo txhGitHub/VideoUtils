@@ -18,6 +18,13 @@
 
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
 
+/* no AV sync correction is done if below the minimum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MIN 0.04
+/* AV sync correction is done if above the maximum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MAX 0.1
+/* If a frame duration is longer than this, it will not be duplicated to compensate AV sync */
+#define AV_SYNC_FRAMEDUP_THRESHOLD 0.1
+
 extern "C"{
     #include <libavcodec/avcodec.h>
     #include <libavformat/avformat.h>
@@ -26,14 +33,25 @@ extern "C"{
     #include <libavutil/channel_layout.h>
     #include <libswresample/swresample.h>
     #include <libavutil/opt.h>
+    #include <libavutil/time.h>
 
     #include <SDL_audio.h>
     #include <SDL.h>
 };
 //基类的保护成员可以在派生类的成员函数中被访问
 
-class VideoController
+
+typedef struct VideoState
 {
+     double last_display_timer;
+     int64_t last_vframe_pts;
+     int64_t last_aframe_pts;
+     bool isFirstFrame;
+} VideoState;
+
+
+class VideoController
+{   
 public:
     VideoController();
     bool startPlay(std::string &filePath);
@@ -42,7 +60,9 @@ public:
     void setVideoCallback(VideoCallback *vcb);
     int openSDL();
     void closeSDL();
+    double calculateDelay(AVPacket *pkt);
 
+    static VideoState g_VideoState;
 protected:
     void decodeVideoThread();
     void doDisplayVideo(const uint8_t *yuv420Buffer, const int &width, const int &height);
