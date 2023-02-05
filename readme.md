@@ -2,4 +2,4 @@
 
 2、界面设计如下：
 
-<img src="C:\Users\pc\AppData\Roaming\Typora\typora-user-images\image-20230205140259736.png" alt="image-20230205140259736" style="zoom:67%;" />
+<img src="https://github.com/txhGitHub/VideoUtils/blob/master/Img/main.png" alt="image-20230205140259736" style="zoom:67%;" />
